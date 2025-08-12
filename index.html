@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Finance Data Room Copilot — Demo</title>
+  <link rel="preconnect" href="." crossorigin>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <span class="logo">◧</span>
+      <span class="title">Finance Data Room Copilot — Demo</span>
+      <span class="beta">web prototype</span>
+    </div>
+    <div class="actions">
+      <button id="btnNewProject" class="ghost" title="Simulate ingest (⌘/Ctrl + N)"><span class="icon">⟳</span> New Project</button>
+      <button id="btnQuickOpen" class="ghost" title="Quick Open (⌘/Ctrl + P)"><span class="icon">⌘P</span> Quick Open</button>
+      <button id="btnCommand" class="ghost" title="Command Palette (⌘/Ctrl + K)"><span class="icon">⌘K</span> Commands</button>
+      <button id="btnExport" class="primary" title="Export current section as .md">Export</button>
+      <button id="btnTheme" class="ghost" aria-label="Toggle theme" title="Toggle dark/light (⌘/Ctrl + J)">☾</button>
+    </div>
+  </header>
+
+  <div class="layout" role="presentation">
+    <aside class="sidebar" aria-label="Repository" id="repoSidebar">
+      <div class="panel-header">
+        <span>Repository</span>
+        <div class="kbd">⌥1</div>
+      </div>
+      <div id="repoTree" class="tree" role="tree" tabindex="0" aria-multiselectable="false"></div>
+      <div class="panel-header" style="margin-top:16px;">
+        <span>Outline / Symbols</span>
+        <div class="kbd">⌥2</div>
+      </div>
+      <div id="outline" class="outline" role="listbox" tabindex="0"></div>
+    </aside>
+
+    <main class="canvas" id="canvas" aria-label="IM Canvas" tabindex="0">
+      <div class="canvas-toolbar">
+        <select id="sectionSelect" aria-label="IM Section"></select>
+        <div class="seps"></div>
+        <button id="btnRedline" class="ghost" title="Redline v1 → v2">Redline</button>
+        <button id="btnInsertCitation" class="ghost" title="Insert citation tag at cursor">Insert Citation</button>
+        <button id="btnInsertTable" class="ghost" title="Insert example table">Insert Table</button>
+        <div class="grow"></div>
+        <div class="hint">Try: <span class="chip">/extract table</span> <span class="chip">/explain formula</span></div>
+      </div>
+      <article id="canvasDoc" class="doc" contenteditable="true" spellcheck="false" aria-label="Editable IM section">
+      </article>
+    </main>
+
+    <aside class="context" id="contextPanel" aria-label="Context & Chat" tabindex="0">
+      <div class="panel-header">
+        <span>Context</span>
+        <div class="kbd">⌥3</div>
+      </div>
+      <div id="contextContent" class="context-content"></div>
+      <div class="panel-header" style="margin-top:16px;">
+        <span>Chat</span>
+        <div class="kbd">⌥4</div>
+      </div>
+      <div class="chat" id="chatBox" role="log" aria-live="polite"></div>
+      <div class="chat-input-row">
+        <input id="chatInput" type="text" placeholder="Ask a grounded question… try: Show FY2022 EBITDA and bridge to FY2023" aria-label="Chat input"/>
+        <button id="chatSend" class="primary">Send</button>
+      </div>
+      <div class="chat-hints">
+        <span class="chip">/show sources</span>
+        <span class="chip">/extract table</span>
+        <span class="chip">/explain formula</span>
+        <span class="chip">/insert citations</span>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Command Palette / Quick Open -->
+  <div class="modal" id="paletteModal" aria-hidden="true" role="dialog" aria-label="Command Palette">
+    <div class="modal-card">
+      <input id="paletteInput" class="palette-input" placeholder="Type a command or search files/symbols…" autofocus aria-label="Palette input"/>
+      <div id="paletteResults" class="palette-results" role="listbox"></div>
+    </div>
+  </div>
+
+  <!-- Peek Preview -->
+  <div class="modal" id="peekModal" aria-hidden="true" role="dialog" aria-label="Peek Preview">
+    <div class="peek-card">
+      <div class="peek-header">
+        <div id="peekTitle" class="peek-title"></div>
+        <button class="ghost" id="btnPeekClose" aria-label="Close">✕</button>
+      </div>
+      <div id="peekBody" class="peek-body"></div>
+    </div>
+  </div>
+
+  <!-- Ingest Simulation -->
+  <div class="modal" id="ingestModal" aria-hidden="true" role="dialog" aria-label="Ingest Progress">
+    <div class="ingest-card">
+      <div class="ingest-header">
+        <strong>Ingesting VDR…</strong>
+        <span id="ingestPct">0%</span>
+      </div>
+      <div class="progress"><div id="ingestBar" class="bar" style="width:0%;"></div></div>
+      <div id="ingestLog" class="ingest-log"></div>
+      <div class="ingest-footer">
+        <span class="muted">OCR (CJK), Excel formulas, passwords handled.</span>
+        <button id="btnIngestClose" class="primary">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
